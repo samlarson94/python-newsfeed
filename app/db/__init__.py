@@ -16,7 +16,7 @@ Base = declarative_base()
     # The Session variable generates temporary connections for performing create, read, update, and delete (CRUD) operations.
     # The Base class variable helps us map the models to real MySQL tables.
 
-def init_db():
+def init_db(app):
   Base.metadata.create_all(engine)
   app.teardown_appcontext(close_db)
 

@@ -25,4 +25,14 @@ def login():
 # Id represents the parameter in the URL. We capture it in single(id)
 @bp.route('/post/<id>')
 def single(id):
-  return render_template('single-post.html')
+  # Update connection to get single post by id through query
+  db = get_db()
+  # filter() method specify's the SQL WHERE clause
+    # By using .one() instead of .all(), we will only return the single post
+  post = db.query(Post).filter(Post.id == id).one()
+
+  # Then render single post template
+  return render_template(
+    'single-post.html',
+    post=post
+  )
