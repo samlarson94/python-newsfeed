@@ -14,4 +14,7 @@ class Post(Base):
   user_id = Column(Integer, ForeignKey('users.id'))
   created_at = Column(DateTime, default=datetime.now)
   updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+# Add relationships to the User and Comment models
   user = relationship('User')
+  comments = relationship('Comment', cascade='all,delete')
+    # cascade will delete all of a post's comments when a post is deleted

@@ -1,4 +1,4 @@
-from app.models import User, Post
+from app.models import User, Post, Comment
 from app.db import Session, Base, engine
 
 # drop and rebuild tables
@@ -29,8 +29,20 @@ db.add_all([
   Post(title='Pellentesque eget nunc', post_url='http://google.ca/nam/nulla/integer.aspx', user_id=4)
 ])
 
-# To run the Insert Statements, we need to call db.commit()
+# Commit Posts
 db.commit()
 
-# End with db.close() to close the session
+# insert comments
+db.add_all([
+  Comment(comment_text='Nunc rhoncus dui vel sem.', user_id=1, post_id=2),
+  Comment(comment_text='Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est.', user_id=1, post_id=3),
+  Comment(comment_text='Aliquam erat volutpat. In congue.', user_id=2, post_id=1),
+  Comment(comment_text='Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', user_id=2, post_id=3),
+  Comment(comment_text='In hac habitasse platea dictumst.', user_id=3, post_id=3)
+])
+
+# Commit Comments
+db.commit()
+
+# End with db.close() to finalize changes and close the session
 db.close()
