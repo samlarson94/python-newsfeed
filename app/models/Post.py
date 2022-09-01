@@ -1,7 +1,8 @@
 from datetime import datetime
 from app.db import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
+from .Vote import Vote
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, select, func
+from sqlalchemy.orm import relationship, column_property
 
 # Create Post class to extend Base
     # Add ForeignKeys to reference users table
@@ -14,7 +15,12 @@ class Post(Base):
   user_id = Column(Integer, ForeignKey('users.id'))
   created_at = Column(DateTime, default=datetime.now)
   updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
-# Add relationships to the User and Comment models
+  # Add vote_count property to calculate a Post's votes
+  vote_count = column_property(
+    select([func.count(Vote.id)]).where(Vote.post_id == id)
+  )
+  # Add relationships to the User and Comment models
   user = relationship('User')
   comments = relationship('Comment', cascade='all,delete')
     # cascade will delete all of a post's comments when a post is deleted
+  votes = relationship('Vote', cascade='all,delete')
