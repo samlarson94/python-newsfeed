@@ -21,7 +21,10 @@ def index():
 
 @bp.route('/login')
 def login():
-  return render_template('login.html')
+  # if not logged in yet
+  if session.get('loggedIn') is None:
+    return render_template('login.html')
+  return redirect('/dashboard')
 
 # Id represents the parameter in the URL. We capture it in single(id)
 @bp.route('/post/<id>')
