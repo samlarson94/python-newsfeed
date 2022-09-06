@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session, redirect
 from app.models import Post
 from app.db import get_db
 
@@ -15,12 +15,16 @@ def index():
   # Update return statement to render the template with posts data
   return render_template(
   'homepage.html',
-  posts=posts
+  posts=posts,
+  loggedIn=session.get('loggedIn')
 )
 
 @bp.route('/login')
 def login():
-  return render_template('login.html')
+  # if not logged in yet
+  if session.get('loggedIn') is None:
+    return render_template('login.html')
+  return redirect('/dashboard')
 
 # Id represents the parameter in the URL. We capture it in single(id)
 @bp.route('/post/<id>')
@@ -34,5 +38,6 @@ def single(id):
   # Then render single post template
   return render_template(
     'single-post.html',
-    post=post
+    post=post,
+    loggedIn=session.get('loggedIn')
   )
