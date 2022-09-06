@@ -36,3 +36,10 @@ def signup():
   session['loggedIn'] = True
 # Return JSON notation that includes the id of the new user to front end
   return jsonify(id = newUser.id)
+
+# ADD LOGOUT ROUTE
+@bp.route('/users/logout', methods=['POST'])
+def logout():
+  # remove session variables, add 204 status for no information
+  session.clear()
+  return '', 204
