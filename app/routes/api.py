@@ -1,6 +1,6 @@
 # Add import statements
 import sys
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from app.models import User
 from app.db import get_db
 
@@ -30,5 +30,9 @@ def signup():
     db.rollback()
     return jsonify(message = 'Signup Failed'), 500
 
+# Sessions - clear existing session data and create two new session properties for user_id and loggedIn 
+  session.clear()
+  session['user_id'] = newUser.id
+  session['loggedIn'] = True
 # Return JSON notation that includes the id of the new user to front end
   return jsonify(id = newUser.id)
