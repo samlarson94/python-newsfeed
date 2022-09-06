@@ -12,15 +12,20 @@ def signup():
   db = get_db()
 
 # Create New User - use Python dictionary notation
-  newUser = User(
-    username = data['username'],
-    email = data['email'],
-    password = data['password']
+  try:
+    # Attempt to create a new user
+    newUser = User(
+      username = data['username'],
+      email = data['email'],
+      password = data['password']
   )
 
 # Save to Database - Add to prep, then commit to db
-  db.add(newUser)
-  db.commit()
-  
+    db.add(newUser)
+    db.commit()
+  except:
+    # insert failure, send error message to front end
+    return jsonify(message = 'Signup Failed'), 500
+
 # Return JSON notation that includes the id of the new user to front end
   return jsonify(id = newUser.id)
