@@ -15,7 +15,8 @@ def index():
   # Update return statement to render the template with posts data
   return render_template(
   'homepage.html',
-  posts=posts
+  posts=posts,
+  loggedIn=session.get('loggedIn')
 )
 
 @bp.route('/login')
@@ -34,5 +35,6 @@ def single(id):
   # Then render single post template
   return render_template(
     'single-post.html',
-    post=post
+    post=post,
+    loggedIn=session.get('loggedIn')
   )
