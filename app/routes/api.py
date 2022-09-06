@@ -43,3 +43,23 @@ def logout():
   # remove session variables, add 204 status for no information
   session.clear()
   return '', 204
+
+# ADD LOGIN ROUTE
+@bp.route('/users/login', methods=['POST'])
+def login():
+  data = request.get_json()
+  db = get_db()
+#   Add try-except statement to handle incorrect credentials
+  try:
+    user = db.query(User).filter(User.email == data['email']).one()
+  except:
+    print(sys.exc_info()[0])
+    
+  if user.verify_password(data['password']) == False:
+    return jsonify(message = 'Incorrect credentials'), 400
+
+  session.clear()
+  session['user_id'] = user.id
+  session['loggedIn'] = True
+
+  return jsonify(id = user.id)
