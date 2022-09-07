@@ -112,7 +112,7 @@ def upvote():
 
   return '', 204
 
-# === NEW POST ROUTE ====
+# === CREATE NEW POST ROUTE ====
 @bp.route('/posts', methods=['POST'])
 def create():
   data = request.get_json()
