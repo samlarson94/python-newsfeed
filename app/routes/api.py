@@ -64,7 +64,7 @@ def login():
 
   return jsonify(id = user.id)
 
-# Comment Route
+# === COMMENT ROUTES ====
 @bp.route('/comments', methods=['POST'])
 def comment():
   data = request.get_json()
@@ -87,3 +87,27 @@ def comment():
     return jsonify(message = 'Comment failed'), 500
 
   return jsonify(id = newComment.id)
+
+
+# === UPVOTE ROUTE ====
+@bp.route('/posts/upvote', methods=['PUT'])
+def upvote():
+  data = request.get_json()
+  db = get_db()
+
+  try:
+    # create a new vote with incoming id and session id
+    newVote = Vote(
+      post_id = data['post_id'],
+      user_id = session.get('user_id')
+    )
+
+    db.add(newVote)
+    db.commit()
+  except:
+    print(sys.exc_info()[0])
+
+    db.rollback()
+    return jsonify(message = 'Upvote failed'), 500
+
+  return '', 204
