@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, session
 from app.models import Post
 from app.db import get_db
+from app.utils.auth import login_required
 
 # url_prefix argument will prefix every route in the blueprint witn /dashboard
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
 @bp.route('/')
+@login_required
 def dash():
   # Add connection and query of the database
   db = get_db()
@@ -23,6 +25,7 @@ def dash():
   )
 
 @bp.route('/edit/<id>')
+@login_required
 def edit(id):
   # Add connection to and query the database
   db = get_db()
